@@ -7,7 +7,7 @@ const generador =require('password-generator');
 const cryptoJS = require('crypto-js');
 const jwt = require('jsonwebtoken')
 
-
+// solo son advertensias
 @injectable({scope: BindingScope.TRANSIENT})
 export class AutenticacionService {
   constructor(
