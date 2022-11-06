@@ -14,12 +14,6 @@ export class Usuario extends Entity {
     type: 'string',
     required: true,
   })
-  cedula: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
   nombre: string;
 
   @property({
@@ -32,25 +26,19 @@ export class Usuario extends Entity {
     type: 'string',
     required: true,
   })
-  telefono: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
   correo: string;
 
   @property({
     type: 'string',
-    required: true,
+    required: false,
   })
   contrasena: string;
 
   @property({
-    type: 'number',
+    type: 'string',
     required: true,
   })
-  rol: number;
+  rol: string;
 
   @hasMany(() => Mascota)
   mascotas: Mascota[];

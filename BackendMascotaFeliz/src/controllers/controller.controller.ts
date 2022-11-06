@@ -1,4 +1,3 @@
-import { service } from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -11,7 +10,6 @@ import {
   post,
   param,
   get,
-  HttpErrors,
   getModelSchemaRef,
   patch,
   put,
@@ -19,45 +17,14 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
-import {Usuario, Credenciales} from '../models';
+import {Usuario} from '../models';
 import {UsuarioRepository} from '../repositories';
 
-import { AutenticacionService } from '../services';
-const fetch = require('node-fetch');
-
-
-export class UsuarioController {
+export class ControllerController {
   constructor(
     @repository(UsuarioRepository)
     public usuarioRepository : UsuarioRepository,
-    @service(AutenticacionService)
-    public servicioAutenticacion : AutenticacionService
   ) {}
-
-  @post('/userauth', {
-    responses: {
-      "200": {
-        descripcion: 'identificador de usuarios'
-      }
-    }
-  })
-  async userauth(
-    @requestBody() Credenciales: Credenciales
-  ) {
-    const p = await this.servicioAutenticacion.authUser(Credenciales.usuario, Credenciales.clave)
-    if (p) {
-      const token = this.servicioAutenticacion.getJWT(p)
-      return {
-        datos: {nombre: p.nombre, correo: p.correo, id: p.id}, tk: token
-      }
-    } else {
-      throw new HttpErrors[401]('Los datos son invalidos')
-    }
-  }
-
-
-
-
 
   @post('/usuarios')
   @response(200, {
@@ -70,30 +37,15 @@ export class UsuarioController {
         'application/json': {
           schema: getModelSchemaRef(Usuario, {
             title: 'NewUsuario',
-            
+            exclude: ['id'],
           }),
         },
       },
     })
-    usuario: Usuario,
+    usuario: Omit<Usuario, 'id'>,
   ): Promise<Usuario> {
-    let clave = this.servicioAutenticacion.GenerarClave();
-    let claveCifrada = this.servicioAutenticacion.CifrarClave(clave);
-    usuario.contrasena =claveCifrada
-    let p = await this.usuarioRepository.create(usuario);
-
-    let destino = usuario.correo;
-    let asunto = "credenciales de acceso"
-    let contenido = `hola ${usuario.nombre},su usuario es ${usuario.correo} y su contraseña es ${usuario.contrasena}`
-    
-    fetch(`http://127.0.0.1:5000/email?correo_destino=${destino}&asunto=${asunto}&contenido=${contenido}`)
-    .then((data:any)=>{
-      console.log(data)
-      
-    })
-    
-    return p
-  } 
+    return this.usuarioRepository.create(usuario);
+  }
 
   @get('/usuarios/count')
   @response(200, {

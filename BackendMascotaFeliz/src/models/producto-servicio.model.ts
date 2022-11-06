@@ -10,10 +10,10 @@ export class ProductoServicio extends Entity {
   id?: string;
 
   @property({
-    type: 'number',
+    type: 'string',
     required: true,
   })
-  tipo: number;
+  tipo: string;
 
   @property({
     type: 'string',
