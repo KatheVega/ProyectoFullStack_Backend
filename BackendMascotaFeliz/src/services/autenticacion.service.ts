@@ -44,13 +44,13 @@ getJWT(user: Usuario) {
   const token = jwt.sign({
     data: {id: user.id, correo: user.correo, nombre: user.nombre},
   },
-    Llaves.jwtKey)
+    Llaves.claveJWT)
   return token
 }
 
 validJWT(token: string) {
   try {
-    const datos = jwt.verify(token, Llaves.jwtKey)
+    const datos = jwt.verify(token, Llaves.claveJWT)
     return datos
   } catch {
     return false
