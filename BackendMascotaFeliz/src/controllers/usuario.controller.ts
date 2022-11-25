@@ -48,15 +48,17 @@ export class UsuarioController {
     if (p) {
       const token = this.servicioAutenticacion.getJWT(p)
       return {
-        datos: {nombre: p.nombre, correo: p.correo, id: p.id}, tk: token
+        datos: {
+          nombre: p.nombre, 
+          correo: p.correo, 
+          id: p.id
+        }, 
+          tk: token
       }
     } else {
       throw new HttpErrors[401]('Los datos son invalidos')
     }
   }
-
-
-
 
 
   @post('/usuarios')
