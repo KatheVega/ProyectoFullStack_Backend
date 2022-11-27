@@ -1,12 +1,13 @@
 import {injectable, /* inject, */ BindingScope} from '@loopback/core';
 import { repository } from '@loopback/repository';
-import { UsuarioRepository } from '../repositories/usuario.repository';
-import { Usuario } from '../models/usuario.model';
-import { Llaves} from '../config/llaves';
+import {UsuarioRepository} from '../repositories';
+import {Llaves} from '../config/llaves'
+import { Usuario } from '../models';
+const generador =require('password-generator');
+const cryptoJS = require('crypto-js');
+const jwt = require('jsonwebtoken')
 
-const generador = require('password-generator');
-const cryptoJS = require('crypto-js')
-const jwt = require('jsonwebtoken');
+// solo son advertensias
 @injectable({scope: BindingScope.TRANSIENT})
 export class AutenticacionService {
   constructor(
